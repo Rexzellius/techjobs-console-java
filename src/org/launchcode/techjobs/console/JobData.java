@@ -7,6 +7,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,12 +47,17 @@ public class JobData {
         return values;
     }
 
+    private static ArrayList<HashMap<String, String>> getAllJobs() {
+        loadData();
+        return allJobs;
+    }
+
     public static ArrayList<HashMap<String, String>> findAll() {
 
         // load data, if not already loaded
         loadData();
 
-        return allJobs;
+        return getAllJobs();
     }
 
     /**
@@ -71,17 +77,36 @@ public class JobData {
         loadData();
 
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        String valueLower = value.toLowerCase();
 
         for (HashMap<String, String> row : allJobs) {
 
-            String aValue = row.get(column);
+            String aValue = row.get(column).toLowerCase();
 
-            if (aValue.contains(value)) {
+            if (aValue.contains(valueLower)) {
                 jobs.add(row);
             }
         }
 
         return jobs;
+    }
+
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+        loadData();
+        ArrayList<HashMap<String, String>> jobValue = new ArrayList<>();
+        String valueLowerCase = value.toLowerCase();
+
+        for (HashMap<String, String> row : allJobs) {
+            for (String searchValue : row.values()) {
+                String searchValueLower = searchValue.toLowerCase();
+                if (searchValueLower.contains(valueLowerCase)) {
+                    if (jobValue.contains(row)) continue;
+                    else jobValue.add(row);
+                }
+            }
+        }
+
+        return jobValue;
     }
 
     /**

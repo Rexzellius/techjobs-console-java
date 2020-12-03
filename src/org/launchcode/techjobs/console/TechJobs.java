@@ -2,6 +2,7 @@ package org.launchcode.techjobs.console;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -61,9 +62,18 @@ public class TechJobs {
                 String searchTerm = in.nextLine();
 
                 if (searchField.equals("all")) {
-                    System.out.println("Search all fields not yet implemented.");
+
+                    if (JobData.findByValue(searchTerm).size() == 0) {
+                        System.out.println("Search by \"" + searchTerm + "\" returned NONE.");
+                    } else {
+                        printJobs(JobData.findByValue(searchTerm));
+                    }
                 } else {
-                    printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
+                    if (JobData.findByColumnAndValue(searchField, searchTerm).size() == 0) {
+                        System.out.println("Search by \"" + searchTerm + "\" returned NONE.");
+                    } else {
+                        printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
+                    }
                 }
             }
         }
@@ -110,7 +120,19 @@ public class TechJobs {
 
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
+        // for (int i = -; i < someJobs.length; i++)
+        // x = columnChoices
+        if (someJobs.size() == 0) {
+            System.out.println("No entries were found.");
+        }
 
-        System.out.println("printJobs is not implemented yet");
+        for(HashMap<String, String> columnChoices : someJobs) { // arraylist of jobs
+            System.out.println("******");
+            for (Map.Entry<String, String> columnDetails : columnChoices.entrySet()) {// key = core competency
+                // look at the key set of the column choices
+                System.out.println(columnDetails.getKey() + ": " + columnDetails.getValue());
+            }
+            System.out.println("******\n");
+        }
     }
 }
