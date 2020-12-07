@@ -64,13 +64,13 @@ public class TechJobs {
                 if (searchField.equals("all")) {
 
                     if (JobData.findByValue(searchTerm).size() == 0) {
-                        System.out.println("Search by \"" + searchTerm + "\" returned NONE.");
+                        System.out.println("No results for \"" + searchTerm + "\".");
                     } else {
                         printJobs(JobData.findByValue(searchTerm));
                     }
                 } else {
                     if (JobData.findByColumnAndValue(searchField, searchTerm).size() == 0) {
-                        System.out.println("Search by \"" + searchTerm + "\" returned NONE.");
+                        System.out.println("No results for \"" + searchTerm + "\".");
                     } else {
                         printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
                     }
